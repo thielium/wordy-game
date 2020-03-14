@@ -1,23 +1,22 @@
 {
   "files": {
-    "main.css": "/wordy-game/static/css/main.d1b05096.chunk.css",
-    "main.js": "/wordy-game/static/js/main.8567ede5.chunk.js",
-    "main.js.map": "/wordy-game/static/js/main.8567ede5.chunk.js.map",
+    "main.css": "/wordy-game/static/css/main.c44e0421.chunk.css",
+    "main.js": "/wordy-game/static/js/main.ed5452ef.chunk.js",
+    "main.js.map": "/wordy-game/static/js/main.ed5452ef.chunk.js.map",
     "runtime-main.js": "/wordy-game/static/js/runtime-main.47008515.js",
     "runtime-main.js.map": "/wordy-game/static/js/runtime-main.47008515.js.map",
-    "static/js/2.6fb53dc5.chunk.js": "/wordy-game/static/js/2.6fb53dc5.chunk.js",
-    "static/js/2.6fb53dc5.chunk.js.map": "/wordy-game/static/js/2.6fb53dc5.chunk.js.map",
+    "static/js/2.00609c79.chunk.js": "/wordy-game/static/js/2.00609c79.chunk.js",
+    "static/js/2.00609c79.chunk.js.map": "/wordy-game/static/js/2.00609c79.chunk.js.map",
     "index.html": "/wordy-game/index.html",
-    "precache-manifest.bd28889a4c8719f36f6179afd47ecf92.js": "/wordy-game/precache-manifest.bd28889a4c8719f36f6179afd47ecf92.js",
+    "precache-manifest.22700c37355b1c320c950505b4701e8a.js": "/wordy-game/precache-manifest.22700c37355b1c320c950505b4701e8a.js",
     "service-worker.js": "/wordy-game/service-worker.js",
-    "static/css/main.d1b05096.chunk.css.map": "/wordy-game/static/css/main.d1b05096.chunk.css.map",
-    "static/js/2.6fb53dc5.chunk.js.LICENSE": "/wordy-game/static/js/2.6fb53dc5.chunk.js.LICENSE",
-    "static/media/logo.svg": "/wordy-game/static/media/logo.5d5d9eef.svg"
+    "static/css/main.c44e0421.chunk.css.map": "/wordy-game/static/css/main.c44e0421.chunk.css.map",
+    "static/js/2.00609c79.chunk.js.LICENSE": "/wordy-game/static/js/2.00609c79.chunk.js.LICENSE"
   },
   "entrypoints": [
     "static/js/runtime-main.47008515.js",
-    "static/js/2.6fb53dc5.chunk.js",
-    "static/css/main.d1b05096.chunk.css",
-    "static/js/main.8567ede5.chunk.js"
+    "static/js/2.00609c79.chunk.js",
+    "static/css/main.c44e0421.chunk.css",
+    "static/js/main.ed5452ef.chunk.js"
   ]
 }
