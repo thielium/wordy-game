@@ -1,12 +1,53 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+class Game extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      word: null,
+      difficulty: null,
+      wordList: null,
+    };
+    this.state.wordList = this.readWordList();
+  }
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+  readWordList() {
+    // TODO
+  }
+
+  getNewWord(difficulty) {
+    this.setState({ difficulty });
+    if (difficulty) this.setState({ word: JSON.stringify(new Date()) });
+  }
+
+  render() {
+    if (this.state.difficulty) {
+      return (
+        <>
+          <div>
+            Level {this.state.difficulty} word here! ({JSON.stringify(new Date())})
+          </div>
+          <button onClick={() => this.getNewWord(this.state.difficulty)}>Next Word</button>
+          <br />
+          <button onClick={() => this.setState({ difficulty: null })}>Main Menu</button>
+          <br />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <button onClick={() => this.getNewWord(1)}>Easy Word</button>
+          <br />
+          <button onClick={() => this.getNewWord(2)}>Medium Word</button>
+          <br />
+          <button onClick={() => this.getNewWord(3)}>Hard Word</button>
+          <br />
+        </>
+      );
+    }
+  }
+}
+
+ReactDOM.render(<Game />, document.getElementById('root'));
