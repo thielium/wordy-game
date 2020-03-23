@@ -9,11 +9,14 @@ class Game extends React.Component {
       difficulty: null,
       wordList: null,
     };
-    this.state.wordList = this.readWordList();
+    this.readWordList();
+    console.log(this.state.wordList);
   }
 
   readWordList() {
-    // TODO
+    fetch('http://localhost:9000/users')
+      .then(res => res.text())
+      .then(res => this.setState({ wordList: res }));
   }
 
   getNewWord(difficulty) {
@@ -26,7 +29,10 @@ class Game extends React.Component {
       return (
         <>
           <div>
-            Level {this.state.difficulty} word here! ({JSON.stringify(new Date())})
+            Level {this.state.difficulty} word here! ({
+              this.state.wordList // TODO
+              // JSON.stringify(new Date())
+            })
           </div>
           <button onClick={() => this.getNewWord(this.state.difficulty)}>Next Word</button>
           <br />
