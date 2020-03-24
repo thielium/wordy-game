@@ -14,7 +14,7 @@ class Game extends React.Component {
   }
 
   readWordList() {
-    fetch('http://localhost:9000/users')
+    fetch('http://localhost:9000/words')
       .then(res => res.text())
       .then(res => this.setState({ wordList: res }));
   }
