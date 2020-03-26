@@ -1,4 +1,5 @@
 import React from 'react';
+import yaml from 'yaml';
 import './index.css';
 
 class Game extends React.Component {
@@ -7,21 +8,22 @@ class Game extends React.Component {
     this.state = {
       word: null,
       difficulty: null,
-      wordList: null,
     };
-    this.readWordList();
-    console.log(this.state.wordList);
   }
 
-  readWordList() {
-    fetch('http://localhost:9000/words')
-      .then(res => res.text())
-      .then(res => this.setState({ wordList: res }));
+  async readWordList() {
+    let resp = await fetch('http://localhost:9000/');
+    return yaml.parse(await resp.text());
+  }
+
+  async componentDidMount() {
+    this.setState({wordList: await this.readWordList()});
   }
 
   getNewWord(difficulty) {
     this.setState({ difficulty });
-    if (difficulty) this.setState({ word: JSON.stringify(new Date()) });
+    console.log(`Game State => ${JSON.stringify(this.state)}`);
+    if (difficulty) this.setState({ word: this.state.wordList[difficulty][0] });
   }
 
   render() {
@@ -30,8 +32,7 @@ class Game extends React.Component {
         <>
           <div>
             Level {this.state.difficulty} word here! ({
-              this.state.wordList // TODO
-              // JSON.stringify(new Date())
+              this.state.word
             })
           </div>
           <button onClick={() => this.getNewWord(this.state.difficulty)}>Next Word</button>
