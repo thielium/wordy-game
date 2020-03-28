@@ -2,6 +2,17 @@ import React from 'react';
 import yaml from 'yaml';
 import './index.css';
 
+const DIFFICULTY_MAP = {
+  1: 'easy',
+  2: 'medium',
+  3: 'hard',
+}
+
+/* const EASY = 1
+const MEDIUM = 2
+const HARD = 3
+*/
+
 class Game extends React.Component {
   constructor(props) {
     super(props);
@@ -21,9 +32,11 @@ class Game extends React.Component {
   }
 
   getNewWord(difficulty) {
-    this.setState({ difficulty });
-    console.log(`Game State => ${JSON.stringify(this.state)}`);
-    if (difficulty) this.setState({ word: this.state.wordList[difficulty][0] });
+    if (difficulty) this.setState({ difficulty });
+    // console.log(`Game State => ${JSON.stringify(this.state)}`);
+    const possibleWords = this.state.wordList[difficulty];
+    const chosenWordIndex = Math.floor(possibleWords.length * Math.random())
+    this.setState({ word: possibleWords[chosenWordIndex] });
   }
 
   render() {
@@ -31,9 +44,7 @@ class Game extends React.Component {
       return (
         <>
           <div>
-            Level {this.state.difficulty} word here! ({
-              this.state.word
-            })
+            The {DIFFICULTY_MAP[this.state.difficulty]} word is: {this.state.word}
           </div>
           <button onClick={() => this.getNewWord(this.state.difficulty)}>Next Word</button>
           <br />
@@ -42,14 +53,19 @@ class Game extends React.Component {
         </>
       );
     } else {
+      const buttons = [];
+      Object.keys(DIFFICULTY_MAP).forEach(diffInteger => {
+        // TODO https://flaviocopes.com/how-to-uppercase-first-letter-javascript/ | capitalize class
+        buttons.push(
+          <>
+            <button onClick={() => this.getNewWord(diffInteger)}>{DIFFICULTY_MAP[diffInteger]} Word</button>
+            <br />
+          </>
+        )
+      });
       return (
         <>
-          <button onClick={() => this.getNewWord(1)}>Easy Word</button>
-          <br />
-          <button onClick={() => this.getNewWord(2)}>Medium Word</button>
-          <br />
-          <button onClick={() => this.getNewWord(3)}>Hard Word</button>
-          <br />
+          {buttons}
         </>
       );
     }

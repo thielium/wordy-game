@@ -1,9 +1,15 @@
 1:  # easy
-  hello
-  school
+  - hello
+  - school
+  - rules
+  - tools
 2:  # medium
-  nuclear
-  meteor
+  - nuclear
+  - meteor
+  - mana
+  - recoder
 3:  # hard
-  subcutaneous
-  retrograde
+  - subcutaneous
+  - retrograde
+  - beneficent
+  - domicile
