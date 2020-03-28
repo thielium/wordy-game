@@ -1,0 +1,11 @@
+{
+  "name": "WordyGame",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently 'cd frontend; react-scripts start' 'node ./backend/bin/www'"
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0"
+  }
+}
