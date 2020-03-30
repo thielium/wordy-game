@@ -1,8 +1,8 @@
-var express = require('express');
-const fs = require('fs')
+import express from 'express';
+import fs from 'fs';
 var router = express.Router();
 
-router.get('/', (__, res, ___) => {
+router.get('/', (__: express.Request, res: express.Response) => {
   const data = fs.readFileSync(__dirname + '/../../aux/word_list.yaml', 'utf8');
   res.send(data);
 });

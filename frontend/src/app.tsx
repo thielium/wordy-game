@@ -2,7 +2,7 @@ import React from 'react';
 import yaml from 'yaml';
 import './index.css';
 
-const DIFFICULTY_MAP = {
+const DIFFICULTY_MAP: { [key: string]: string } = {
   1: 'easy',
   2: 'medium',
   3: 'hard',
@@ -13,8 +13,15 @@ const MEDIUM = 2
 const HARD = 3
 */
 
-class Game extends React.Component {
-  constructor(props) {
+interface GameProps {}
+interface GameState {
+  word: string | null;
+  difficulty: string | null;  // Actually an integer: 1, 2, or 3
+  wordList?: string[];
+}
+
+class Game extends React.Component<GameProps, GameState> {
+  constructor(props: GameProps) {
     super(props);
     this.state = {
       word: null,
@@ -31,7 +38,7 @@ class Game extends React.Component {
     this.setState({wordList: await this.readWordList()});
   }
 
-  getNewWord(difficulty) {
+  getNewWord(difficulty: string) {
     if (difficulty) this.setState({ difficulty });
     // console.log(`Game State => ${JSON.stringify(this.state)}`);
     const possibleWords = this.state.wordList[difficulty];
