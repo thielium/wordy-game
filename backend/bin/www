@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// TODO
+// @ts-nocheck
 
 /**
  * Module dependencies.

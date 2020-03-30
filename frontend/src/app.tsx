@@ -2,22 +2,17 @@ import React from 'react';
 import yaml from 'yaml';
 import './index.css';
 
-const DIFFICULTY_MAP: { [key: string]: string } = {
-  1: 'easy',
-  2: 'medium',
-  3: 'hard',
-}
-
-/* const EASY = 1
-const MEDIUM = 2
-const HARD = 3
-*/
+const DIFFICULTY_MAP = new Map<number, string>([
+  [1, 'easy'],
+  [2, 'medium'],
+  [3, 'hard'],
+])
 
 interface GameProps {}
 interface GameState {
   word: string | null;
-  difficulty: string | null;  // Actually an integer: 1, 2, or 3
-  wordList?: string[];
+  difficulty: number | null;  // Actually an integer: 1, 2, or 3
+  wordList: string[];
 }
 
 class Game extends React.Component<GameProps, GameState> {
@@ -26,6 +21,7 @@ class Game extends React.Component<GameProps, GameState> {
     this.state = {
       word: null,
       difficulty: null,
+      wordList: [],
     };
   }
 
@@ -38,10 +34,10 @@ class Game extends React.Component<GameProps, GameState> {
     this.setState({wordList: await this.readWordList()});
   }
 
-  getNewWord(difficulty: string) {
-    if (difficulty) this.setState({ difficulty });
-    // console.log(`Game State => ${JSON.stringify(this.state)}`);
-    const possibleWords = this.state.wordList[difficulty];
+  getNewWord(difficulty: number | null) {
+    if (difficulty === null) throw new Error('difficulty level is "null" in "getNewWord"');
+    this.setState({ difficulty });
+    var possibleWords = this.state.wordList[difficulty];
     const chosenWordIndex = Math.floor(possibleWords.length * Math.random())
     this.setState({ word: possibleWords[chosenWordIndex] });
   }
@@ -51,7 +47,7 @@ class Game extends React.Component<GameProps, GameState> {
       return (
         <>
           <div>
-            The {DIFFICULTY_MAP[this.state.difficulty]} word is: {this.state.word}
+            The {DIFFICULTY_MAP.get(this.state.difficulty)} word is: {this.state.word}
           </div>
           <button onClick={() => this.getNewWord(this.state.difficulty)}>Next Word</button>
           <br />
@@ -60,16 +56,17 @@ class Game extends React.Component<GameProps, GameState> {
         </>
       );
     } else {
-      const buttons = [];
-      Object.keys(DIFFICULTY_MAP).forEach(diffInteger => {
+      const buttons: React.ReactFragment[] = [];
+      // Array.from(...) due to: https://github.com/microsoft/TypeScript/issues/11209#issuecomment-303152976
+      for (let diffInteger of Array.from(DIFFICULTY_MAP.keys())) {
         // TODO https://flaviocopes.com/how-to-uppercase-first-letter-javascript/ | capitalize class
         buttons.push(
           <>
-            <button onClick={() => this.getNewWord(diffInteger)}>{DIFFICULTY_MAP[diffInteger]} Word</button>
+            <button onClick={() => this.getNewWord(diffInteger)}>{DIFFICULTY_MAP.get(diffInteger)} Word</button>
             <br />
           </>
         )
-      });
+      };
       return (
         <>
           {buttons}
