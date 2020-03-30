@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "_start": "node ./bin/www",
     "start": "nodemon --config nodemon.json"
   },
   "dependencies": {
