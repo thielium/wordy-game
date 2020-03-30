@@ -13,6 +13,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "@types/http-errors": "^1.6.3",
     "@types/yaml": "^1.2.0"
   }
 }
