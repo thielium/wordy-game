@@ -1,17 +1,17 @@
 import React from 'react';
 import yaml from 'yaml';
-import './index.css';
+import './app.css';
 
 const DIFFICULTY_MAP = new Map<number, string>([
   [1, 'easy'],
   [2, 'medium'],
   [3, 'hard'],
-])
+]);
 
 interface GameProps {}
 interface GameState {
   word: string | null;
-  difficulty: number | null;  // Actually an integer: 1, 2, or 3
+  difficulty: number | null; // Actually an integer: 1, 2, or 3
   wordList: string[];
 }
 
@@ -31,14 +31,14 @@ class Game extends React.Component<GameProps, GameState> {
   }
 
   async componentDidMount() {
-    this.setState({wordList: await this.readWordList()});
+    this.setState({ wordList: await this.readWordList() });
   }
 
   getNewWord(difficulty: number | null) {
     if (difficulty === null) throw new Error('difficulty level is "null" in "getNewWord"');
     this.setState({ difficulty });
     var possibleWords = this.state.wordList[difficulty];
-    const chosenWordIndex = Math.floor(possibleWords.length * Math.random())
+    const chosenWordIndex = Math.floor(possibleWords.length * Math.random());
     this.setState({ word: possibleWords[chosenWordIndex] });
   }
 
@@ -47,7 +47,8 @@ class Game extends React.Component<GameProps, GameState> {
       return (
         <>
           <div>
-            The {DIFFICULTY_MAP.get(this.state.difficulty)} word is: {this.state.word}
+            The {DIFFICULTY_MAP.get(this.state.difficulty)} word is:
+            <div className="word-to-guess">{this.state.word}</div>
           </div>
           <button onClick={() => this.getNewWord(this.state.difficulty)}>Next Word</button>
           <br />
@@ -64,14 +65,10 @@ class Game extends React.Component<GameProps, GameState> {
           <>
             <button onClick={() => this.getNewWord(diffInteger)}>{DIFFICULTY_MAP.get(diffInteger)} Word</button>
             <br />
-          </>
-        )
-      };
-      return (
-        <>
-          {buttons}
-        </>
-      );
+          </>,
+        );
+      }
+      return <>{buttons}</>;
     }
   }
 }
