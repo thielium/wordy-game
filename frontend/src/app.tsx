@@ -1,3 +1,9 @@
+// TODOs:
+// * Add Used Words List
+//   * PERSIST USED WORDS in session cookie
+//   * Import, Export, and Clear "Used" words list
+// * Add template page?
+
 import React from 'react';
 import yaml from 'yaml';
 import './app.css';
@@ -10,18 +16,20 @@ const DIFFICULTY_MAP = new Map<number, string>([
 
 interface GameProps {}
 interface GameState {
-  word: string | null;
+  currentWord: string | null;
   difficulty: number | null; // Actually an integer: 1, 2, or 3
   wordList: string[];
+  usedWords: string[];
 }
 
 class Game extends React.Component<GameProps, GameState> {
   constructor(props: GameProps) {
     super(props);
     this.state = {
-      word: null,
+      currentWord: null,
       difficulty: null,
       wordList: [],
+      usedWords: [],
     };
   }
 
@@ -39,36 +47,48 @@ class Game extends React.Component<GameProps, GameState> {
     this.setState({ difficulty });
     var possibleWords = this.state.wordList[difficulty];
     const chosenWordIndex = Math.floor(possibleWords.length * Math.random());
-    this.setState({ word: possibleWords[chosenWordIndex] });
+    const newWord = possibleWords[chosenWordIndex];
+    this.setState({ currentWord: newWord, usedWords: this.state.usedWords.concat(newWord) });
   }
 
   render() {
     if (this.state.difficulty) {
+      // Displays word of the selected difficulty
       return (
         <>
           <div>
             The {DIFFICULTY_MAP.get(this.state.difficulty)} word is:
-            <div className="word-to-guess">{this.state.word}</div>
+            <div className="word-to-guess">{this.state.currentWord}</div>
+            <div>{this.state.usedWords}</div>
           </div>
-          <button onClick={() => this.getNewWord(this.state.difficulty)}>Next Word</button>
+          <button onClick={() => this.getNewWord(this.state.difficulty)} style={{ textTransform: 'capitalize' }}>
+            Next {DIFFICULTY_MAP.get(this.state.difficulty)} Word
+          </button>
           <br />
-          <button onClick={() => this.setState({ difficulty: null })}>Main Menu</button>
+          <button onClick={() => this.setState({ difficulty: null })}>Back to Home</button>
           <br />
         </>
       );
     } else {
+      // Allows user to select word difficulty
       const buttons: React.ReactFragment[] = [];
       // Array.from(...) due to: https://github.com/microsoft/TypeScript/issues/11209#issuecomment-303152976
       for (let diffInteger of Array.from(DIFFICULTY_MAP.keys())) {
-        // TODO https://flaviocopes.com/how-to-uppercase-first-letter-javascript/ | capitalize class
         buttons.push(
           <>
-            <button onClick={() => this.getNewWord(diffInteger)}>{DIFFICULTY_MAP.get(diffInteger)} Word</button>
+            <button onClick={() => this.getNewWord(diffInteger)} style={{ textTransform: 'capitalize' }}>
+              {DIFFICULTY_MAP.get(diffInteger)} Word
+            </button>
             <br />
           </>,
         );
       }
-      return <>{buttons}</>;
+      return (
+        <>
+          <div>Select Difficulty</div>
+          {buttons}
+        </>
+      );
     }
   }
 }
