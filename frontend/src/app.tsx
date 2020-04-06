@@ -59,7 +59,6 @@ class Game extends React.Component<GameProps, GameState> {
           <div>
             The {DIFFICULTY_MAP.get(this.state.difficulty)} word is:
             <div className="word-to-guess">{this.state.currentWord}</div>
-            <div>{this.state.usedWords}</div>
           </div>
           <button onClick={() => this.getNewWord(this.state.difficulty)} style={{ textTransform: 'capitalize' }}>
             Next {DIFFICULTY_MAP.get(this.state.difficulty)} Word

@@ -1,0 +1,4 @@
+.word-to-guess {
+  text-transform: capitalize;
+  font-size: 40px;
+}
