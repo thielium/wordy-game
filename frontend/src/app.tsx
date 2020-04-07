@@ -8,6 +8,7 @@ import React from 'react';
 import yaml from 'yaml';
 import './app.css';
 
+const USED_WORDS = 'usedWords';
 const DIFFICULTY_MAP = new Map<number, string>([
   [1, 'easy'],
   [2, 'medium'],
@@ -19,7 +20,6 @@ interface GameState {
   currentWord: string | null;
   difficulty: number | null; // Actually an integer: 1, 2, or 3
   wordList: string[];
-  usedWords: string[];
 }
 
 class Game extends React.Component<GameProps, GameState> {
@@ -29,7 +29,6 @@ class Game extends React.Component<GameProps, GameState> {
       currentWord: null,
       difficulty: null,
       wordList: [],
-      usedWords: [],
     };
   }
 
@@ -48,17 +47,24 @@ class Game extends React.Component<GameProps, GameState> {
     var possibleWords = this.state.wordList[difficulty];
     const chosenWordIndex = Math.floor(possibleWords.length * Math.random());
     const newWord = possibleWords[chosenWordIndex];
-    this.setState({ currentWord: newWord, usedWords: this.state.usedWords.concat(newWord) });
+
+    this.setState({ currentWord: newWord });
+    const usedWords = JSON.parse(localStorage.getItem(USED_WORDS) || '[]');
+    usedWords.push(newWord);
+    localStorage.setItem(USED_WORDS, JSON.stringify(usedWords));
   }
 
   render() {
     if (this.state.difficulty) {
       // Displays word of the selected difficulty
+
+      // TODO: <div>{localStorage.getItem(USED_WORDS)}</div>    <--- TEMP
       return (
         <>
           <div>
             The {DIFFICULTY_MAP.get(this.state.difficulty)} word is:
             <div className="word-to-guess">{this.state.currentWord}</div>
+            <div>{localStorage.getItem(USED_WORDS)}</div>
           </div>
           <button onClick={() => this.getNewWord(this.state.difficulty)} style={{ textTransform: 'capitalize' }}>
             Next {DIFFICULTY_MAP.get(this.state.difficulty)} Word
