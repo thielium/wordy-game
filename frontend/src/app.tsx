@@ -5,6 +5,7 @@
 // * Add template page?
 
 import React from 'react';
+import { View } from 'react-native';
 import yaml from 'yaml';
 import './app.css';
 
@@ -41,8 +42,8 @@ class Game extends React.Component<GameProps, GameState> {
     this.setState({ wordList: await this.readWordList() });
   }
 
-  getNewWord(difficulty: number | null) {
-    if (difficulty === null) throw new Error('difficulty level is "null" in "getNewWord"');
+  setNewWord(difficulty: number | null): void {
+    if (difficulty === null) throw new Error('difficulty level is "null" in "setNewWord"');
     this.setState({ difficulty });
     var possibleWords = this.state.wordList[difficulty];
     const chosenWordIndex = Math.floor(possibleWords.length * Math.random());
@@ -54,11 +55,21 @@ class Game extends React.Component<GameProps, GameState> {
     localStorage.setItem(USED_WORDS, JSON.stringify(usedWords));
   }
 
+  exportUsedWords(): void {
+    throw new Error('Method not implemented.');
+  }
+
+  importUsedWords(): void {
+    throw new Error('Method not implemented.');
+  }
+
+  clearUsedWords(): void {
+    throw new Error('Method not implemented.');
+  }
+
   render() {
     if (this.state.difficulty) {
-      // Displays word of the selected difficulty
-
-      // TODO: <div>{localStorage.getItem(USED_WORDS)}</div>    <--- TEMP
+      // Displays word of the previously selected difficulty
       return (
         <>
           <div>
@@ -66,7 +77,7 @@ class Game extends React.Component<GameProps, GameState> {
             <div className="word-to-guess">{this.state.currentWord}</div>
             <div>{localStorage.getItem(USED_WORDS)}</div>
           </div>
-          <button onClick={() => this.getNewWord(this.state.difficulty)} style={{ textTransform: 'capitalize' }}>
+          <button onClick={() => this.setNewWord(this.state.difficulty)} style={{ textTransform: 'capitalize' }}>
             Next {DIFFICULTY_MAP.get(this.state.difficulty)} Word
           </button>
           <br />
@@ -77,11 +88,14 @@ class Game extends React.Component<GameProps, GameState> {
     } else {
       // Allows user to select word difficulty
       const buttons: React.ReactFragment[] = [];
+
+      // TODO: CHANGE <br /> to Vertical Stacking
+
       // Array.from(...) due to: https://github.com/microsoft/TypeScript/issues/11209#issuecomment-303152976
       for (let diffInteger of Array.from(DIFFICULTY_MAP.keys())) {
         buttons.push(
           <>
-            <button onClick={() => this.getNewWord(diffInteger)} style={{ textTransform: 'capitalize' }}>
+            <button onClick={() => this.setNewWord(diffInteger)} style={{ textTransform: 'capitalize' }}>
               {DIFFICULTY_MAP.get(diffInteger)} Word
             </button>
             <br />
@@ -90,8 +104,19 @@ class Game extends React.Component<GameProps, GameState> {
       }
       return (
         <>
-          <div>Select Difficulty</div>
-          {buttons}
+          <View style={{ flexDirection: 'row' }}>
+            <div>
+              <div>Select Difficulty</div>
+              {buttons}
+            </div>
+            <div>
+              <button onClick={() => this.clearUsedWords()}>Clear Used Word List</button>
+              <br />
+              <button onClick={() => this.importUsedWords()}>Import Used Word List</button>
+              <br />
+              <button onClick={() => this.exportUsedWords()}>Export Used Word List</button>
+            </div>
+          </View>
         </>
       );
     }
