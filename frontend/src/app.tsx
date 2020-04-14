@@ -55,16 +55,22 @@ class Game extends React.Component<GameProps, GameState> {
     localStorage.setItem(USED_WORDS, JSON.stringify(usedWords));
   }
 
-  exportUsedWords(): void {
-    throw new Error('Method not implemented.');
+  clearUsedWords(): void {
+    localStorage.removeItem(USED_WORDS);
+    // TODO - UI confirmation that usedWords was deleted
   }
 
   importUsedWords(): void {
     throw new Error('Method not implemented.');
   }
 
-  clearUsedWords(): void {
-    throw new Error('Method not implemented.');
+  exportUsedWords(): void {
+    const ephemeralElement = document.createElement('a');
+    const usedWords = JSON.stringify(localStorage.getItem(USED_WORDS) || '[]');
+    ephemeralElement.href = URL.createObjectURL(new Blob([usedWords], { type: 'application/json' }));
+    ephemeralElement.download = 'usedWords.json';
+    document.body.appendChild(ephemeralElement); // Required for FireFox
+    ephemeralElement.click();
   }
 
   render() {
