@@ -60,9 +60,14 @@ class Game extends React.Component<GameProps, GameState> {
     // TODO - UI confirmation that usedWords was deleted
   }
 
-  importUsedWords(): void {
-    throw new Error('Method not implemented.');
-  }
+  importUsedWords = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const files = Array.from(event.target.files);
+      console.log('here');
+      console.log(files);
+    }
+    // throw new Error('Method not implemented.');
+  };
 
   exportUsedWords(): void {
     const ephemeralElement = document.createElement('a');
@@ -118,8 +123,29 @@ class Game extends React.Component<GameProps, GameState> {
             <div>
               <button onClick={() => this.clearUsedWords()}>Clear Used Word List</button>
               <br />
-              <button onClick={() => this.importUsedWords()}>Import Used Word List</button>
+
+              {/* TODO: Clean this up!!!! */}
+              <div className="button">
+                <label htmlFor="upload-input">
+                  <button
+                    onClick={() => {
+                      document.getElementById('upload-input')?.click();
+                    }}
+                  >
+                    Import Used Word List
+                  </button>
+                </label>
+                <input
+                  type="file"
+                  onChange={this.importUsedWords}
+                  id="upload-input"
+                  style={{
+                    display: 'none',
+                  }}
+                />
+              </div>
               <br />
+
               <button onClick={() => this.exportUsedWords()}>Export Used Word List</button>
             </div>
           </View>
