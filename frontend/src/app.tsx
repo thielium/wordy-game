@@ -46,11 +46,22 @@ class Game extends React.Component<GameProps, GameState> {
     if (difficulty === null) throw new Error('difficulty level is "null" in "setNewWord"');
     this.setState({ difficulty });
     var possibleWords = this.state.wordList[difficulty];
-    const chosenWordIndex = Math.floor(possibleWords.length * Math.random());
-    const newWord = possibleWords[chosenWordIndex];
-
-    this.setState({ currentWord: newWord });
+    let chosenWordIndex = Math.floor(possibleWords.length * Math.random());
     const usedWords = JSON.parse(localStorage.getItem(USED_WORDS) || '[]');
+
+    if (possibleWords.length == usedWords.length) {
+      throw new Error('All words used. You must REALLY like this game!');
+    }
+    // There's a better way to do this, but the probability of encountering a used word
+    // is so low, that the inefficiencies here are negligible
+    let newWord = possibleWords[chosenWordIndex];
+
+    while (usedWords.includes(newWord)) {
+      chosenWordIndex++;
+      if (chosenWordIndex >= possibleWords.length) chosenWordIndex = 0;
+      newWord = possibleWords[chosenWordIndex];
+    }
+    this.setState({ currentWord: newWord });
     usedWords.push(newWord);
     localStorage.setItem(USED_WORDS, JSON.stringify(usedWords));
   }
