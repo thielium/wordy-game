@@ -49,15 +49,20 @@ class Game extends React.Component<GameProps, GameState> {
     let chosenWordIndex = Math.floor(possibleWords.length * Math.random());
     const usedWords = JSON.parse(localStorage.getItem(USED_WORDS) || '[]');
 
-    if (possibleWords.length == usedWords.length) {
-      throw new Error('All words used. You must REALLY like this game!');
-    }
     // There's a better way to do this, but the probability of encountering a used word
     // is so low, that the inefficiencies here are negligible
     let newWord = possibleWords[chosenWordIndex];
 
+    const originalIndex = chosenWordIndex;
     while (usedWords.includes(newWord)) {
+      // TODO - debug with chrome debugger in VSCode
+      console.log(chosenWordIndex);
+      console.log(newWord);
+
       chosenWordIndex++;
+      if (chosenWordIndex === originalIndex) {
+        throw new Error('All words used. You must REALLY like this game!');
+      }
       if (chosenWordIndex >= possibleWords.length) chosenWordIndex = 0;
       newWord = possibleWords[chosenWordIndex];
     }
@@ -73,11 +78,14 @@ class Game extends React.Component<GameProps, GameState> {
 
   importUsedWords = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      const files = Array.from(event.target.files);
-      console.log('here');
-      console.log(files);
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          localStorage.setItem(USED_WORDS, JSON.parse(reader.result));
+        }
+      };
+      reader.readAsText(event.target.files[0]);
     }
-    // throw new Error('Method not implemented.');
   };
 
   exportUsedWords(): void {
