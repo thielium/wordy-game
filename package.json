@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@types/http-errors": "^1.6.3",
-    "@types/yaml": "^1.2.0"
+    "@types/yaml": "^1.2.0",
+    "react-router-dom": "^5.1.2"
   }
 }
