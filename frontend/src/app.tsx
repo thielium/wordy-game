@@ -95,40 +95,7 @@ class Game extends React.Component<GameProps, GameState> {
     ephemeralElement.click();
   }
 
-  Options() {
-    return (
-      <div>
-        <button onClick={() => this.clearUsedWords()}>Clear Used Word List</button>
-        <br />
-
-        {/* TODO: Clean this up!!!! */}
-        <div className="button">
-          <label htmlFor="upload-input">
-            <button
-              onClick={() => {
-                document.getElementById('upload-input')?.click();
-              }}
-            >
-              Import Used Word List
-            </button>
-          </label>
-          <input
-            type="file"
-            onChange={this.importUsedWords}
-            id="upload-input"
-            style={{
-              display: 'none',
-            }}
-          />
-        </div>
-        <br />
-
-        <button onClick={() => this.exportUsedWords()}>Export Used Word List</button>
-      </div>
-    );
-  }
-
-  render() {
+  Home = () => {
     if (this.state.difficulty) {
       // Displays word of the previously selected difficulty
       return (
@@ -142,7 +109,7 @@ class Game extends React.Component<GameProps, GameState> {
             Next {DIFFICULTY_MAP.get(this.state.difficulty)} Word
           </button>
           <br />
-          <button onClick={() => this.setState({ difficulty: null })}>Back to Home</button>
+          <button onClick={() => this.setState({ difficulty: null })}>Home</button>
           <br />
         </>
       );
@@ -169,18 +136,58 @@ class Game extends React.Component<GameProps, GameState> {
             <div>Select Difficulty</div>
             {buttons}
           </div>
-          <Router>
-            <Link to="/options">Options</Link>
-
-            <Switch>
-              <Route path="/options">
-                <this.Options />
-              </Route>
-            </Switch>
-          </Router>
+          <Link to="/options">Options</Link>
         </>
       );
     }
+  };
+
+  Options = () => {
+    return (
+      <div>
+        <button onClick={() => this.clearUsedWords()}>Clear Used Word List</button>
+        <br />
+
+        {/* TODO: Clean this up!!!! */}
+        <div className="button">
+          <label htmlFor="upload-input">
+            <button
+              onClick={() => {
+                document.getElementById('upload-input')?.click();
+              }}
+            >
+              Import Used Word List
+            </button>
+          </label>
+          <input
+            type="file"
+            onChange={this.importUsedWords}
+            id="upload-input"
+            style={{
+              display: 'none',
+            }}
+          />
+        </div>
+        <button onClick={() => this.exportUsedWords()}>Export Used Word List</button>
+        <br />
+        <Link to="/">Home</Link>
+      </div>
+    );
+  };
+
+  render() {
+    return (
+      <Router>
+        <Switch>
+          <Route path="/options">
+            <this.Options />
+          </Route>
+          <Route path="/">
+            <this.Home />
+          </Route>
+        </Switch>
+      </Router>
+    );
   }
 }
 
