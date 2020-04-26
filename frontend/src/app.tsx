@@ -132,11 +132,14 @@ class Game extends React.Component<GameProps, GameState> {
       }
       return (
         <>
+          <div>Home Menu</div>
           <div>
             <div>Select Difficulty</div>
             {buttons}
           </div>
-          <Link to="/options">Options</Link>
+          <Link to="/options">
+            <button type="button">Options</button>
+          </Link>
         </>
       );
     }
@@ -145,6 +148,7 @@ class Game extends React.Component<GameProps, GameState> {
   Options = () => {
     return (
       <div>
+        <div>Game Options</div>
         <button onClick={() => this.clearUsedWords()}>Clear Used Word List</button>
         <br />
 
@@ -170,7 +174,9 @@ class Game extends React.Component<GameProps, GameState> {
         </div>
         <button onClick={() => this.exportUsedWords()}>Export Used Word List</button>
         <br />
-        <Link to="/">Home</Link>
+        <Link to="/">
+          <button type="button">Home</button>
+        </Link>
       </div>
     );
   };
@@ -179,11 +185,11 @@ class Game extends React.Component<GameProps, GameState> {
     return (
       <Router>
         <Switch>
+          <Route exact path="/">
+            <this.Home />
+          </Route>
           <Route path="/options">
             <this.Options />
-          </Route>
-          <Route path="/">
-            <this.Home />
           </Route>
         </Switch>
       </Router>
