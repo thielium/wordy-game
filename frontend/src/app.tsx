@@ -1,8 +1,7 @@
 // TODOs:
-// * Add Used Words List
 // * Add template page?
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import yaml from 'yaml';
 import './app.css';
@@ -14,36 +13,25 @@ const DIFFICULTY_MAP = new Map<number, string>([
   [3, 'hard'],
 ]);
 
-interface GameProps {}
-interface GameState {
-  currentWord: string | null;
-  difficulty: number | null; // Actually an integer: 1, 2, or 3
-  wordList: string[];
-}
+// TODO: 304 redirects!!!
 
-class Game extends React.Component<GameProps, GameState> {
-  constructor(props: GameProps) {
-    super(props);
-    this.state = {
-      currentWord: null,
-      difficulty: null,
-      wordList: [],
+const Game = () => {
+  const [currentWord, setCurrentWord] = useState<string | null>(null);
+  const [difficulty, setDifficulty] = useState<number | null>(null); // Actually an integer: 1, 2, or 3
+  const [wordList, setWordList] = useState<string[]>([]);
+
+  useEffect(() => {
+    const readWordList = async () => {
+      let resp = await fetch('http://localhost:9000/');
+      setWordList(yaml.parse(await resp.text()));
     };
-  }
+    readWordList();
+  }, []);
 
-  async readWordList() {
-    let resp = await fetch('http://localhost:9000/');
-    return yaml.parse(await resp.text());
-  }
-
-  async componentDidMount() {
-    this.setState({ wordList: await this.readWordList() });
-  }
-
-  setNewWord(difficulty: number | null): void {
+  const setNewWord = (difficulty: number | null): void => {
     if (difficulty === null) throw new Error('difficulty level is "null" in "setNewWord"');
-    this.setState({ difficulty });
-    var possibleWords = this.state.wordList[difficulty];
+    setDifficulty(difficulty);
+    var possibleWords = wordList[difficulty];
     let chosenWordIndex = Math.floor(possibleWords.length * Math.random());
     const usedWords = JSON.parse(localStorage.getItem(USED_WORDS) || '[]');
 
@@ -64,17 +52,17 @@ class Game extends React.Component<GameProps, GameState> {
       if (chosenWordIndex >= possibleWords.length) chosenWordIndex = 0;
       newWord = possibleWords[chosenWordIndex];
     }
-    this.setState({ currentWord: newWord });
+    setCurrentWord(newWord);
     usedWords.push(newWord);
     localStorage.setItem(USED_WORDS, JSON.stringify(usedWords));
-  }
+  };
 
-  clearUsedWords(): void {
+  const clearUsedWords = (): void => {
     localStorage.removeItem(USED_WORDS);
     // TODO - UI confirmation that usedWords was deleted
-  }
+  };
 
-  importUsedWords = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const importUsedWords = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -86,30 +74,30 @@ class Game extends React.Component<GameProps, GameState> {
     }
   };
 
-  exportUsedWords(): void {
+  const exportUsedWords = (): void => {
     const ephemeralElement = document.createElement('a');
     const usedWords = JSON.stringify(localStorage.getItem(USED_WORDS) || '[]');
     ephemeralElement.href = URL.createObjectURL(new Blob([usedWords], { type: 'application/json' }));
     ephemeralElement.download = 'usedWords.json';
     document.body.appendChild(ephemeralElement); // Required for FireFox
     ephemeralElement.click();
-  }
+  };
 
-  Home = () => {
-    if (this.state.difficulty) {
+  const Home = () => {
+    if (difficulty) {
       // Displays word of the previously selected difficulty
       return (
         <>
           <div>
-            The {DIFFICULTY_MAP.get(this.state.difficulty)} word is:
-            <div className="word-to-guess">{this.state.currentWord}</div>
+            The {DIFFICULTY_MAP.get(difficulty)} word is:
+            <div className="word-to-guess">{currentWord}</div>
             <div>{localStorage.getItem(USED_WORDS)}</div>
           </div>
-          <button onClick={() => this.setNewWord(this.state.difficulty)} style={{ textTransform: 'capitalize' }}>
-            Next {DIFFICULTY_MAP.get(this.state.difficulty)} Word
+          <button onClick={() => setNewWord(difficulty)} style={{ textTransform: 'capitalize' }}>
+            Next {DIFFICULTY_MAP.get(difficulty)} Word
           </button>
           <br />
-          <button onClick={() => this.setState({ difficulty: null })}>Home</button>
+          <button onClick={() => setDifficulty(null)}>Home</button>
           <br />
         </>
       );
@@ -123,7 +111,7 @@ class Game extends React.Component<GameProps, GameState> {
       for (let diffInteger of Array.from(DIFFICULTY_MAP.keys())) {
         buttons.push(
           <>
-            <button onClick={() => this.setNewWord(diffInteger)} style={{ textTransform: 'capitalize' }}>
+            <button onClick={() => setNewWord(diffInteger)} style={{ textTransform: 'capitalize' }}>
               {DIFFICULTY_MAP.get(diffInteger)} Word
             </button>
             <br />
@@ -145,14 +133,14 @@ class Game extends React.Component<GameProps, GameState> {
     }
   };
 
-  Options = () => {
+  const Options = () => {
     return (
       <div>
         <div>Game Options</div>
-        <button onClick={() => this.clearUsedWords()}>Clear Used Word List</button>
+        <button onClick={() => clearUsedWords()}>Clear Used Word List</button>
         <br />
 
-        {/* TODO: Clean this up!!!! */}
+        <p> TODO: Clean this up!!!! </p>
         <div className="button">
           <label htmlFor="upload-input">
             <button
@@ -165,14 +153,14 @@ class Game extends React.Component<GameProps, GameState> {
           </label>
           <input
             type="file"
-            onChange={this.importUsedWords}
+            onChange={importUsedWords}
             id="upload-input"
             style={{
               display: 'none',
             }}
           />
         </div>
-        <button onClick={() => this.exportUsedWords()}>Export Used Word List</button>
+        <button onClick={() => exportUsedWords()}>Export Used Word List</button>
         <br />
         <Link to="/">
           <button type="button">Home</button>
@@ -181,20 +169,18 @@ class Game extends React.Component<GameProps, GameState> {
     );
   };
 
-  render() {
-    return (
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <this.Home />
-          </Route>
-          <Route path="/options">
-            <this.Options />
-          </Route>
-        </Switch>
-      </Router>
-    );
-  }
-}
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="/options">
+          <Options />
+        </Route>
+      </Switch>
+    </Router>
+  );
+};
 
 export default Game;
