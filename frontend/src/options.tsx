@@ -1,10 +1,11 @@
+import cogoToast from 'cogo-toast';
 import { Link } from 'react-router-dom';
 import React from 'react';
 export const USED_WORDS = 'usedWords';
 
 const clearUsedWords = (): void => {
   localStorage.removeItem(USED_WORDS);
-  // TODO - UI confirmation that usedWords was deleted
+  cogoToast.success('Used word list cleared');
 };
 
 const importUsedWords = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,9 +21,13 @@ const importUsedWords = (event: React.ChangeEvent<HTMLInputElement>) => {
 };
 
 const exportUsedWords = (): void => {
+  const usedWords = localStorage.getItem(USED_WORDS);
+  if (usedWords == null) {
+    cogoToast.error('Word list is empty');
+    return;
+  }
   const ephemeralElement = document.createElement('a');
-  const usedWords = JSON.stringify(localStorage.getItem(USED_WORDS) || '[]');
-  ephemeralElement.href = URL.createObjectURL(new Blob([usedWords], { type: 'application/json' }));
+  ephemeralElement.href = URL.createObjectURL(new Blob([JSON.stringify(usedWords)], { type: 'application/json' }));
   ephemeralElement.download = 'usedWords.json';
   document.body.appendChild(ephemeralElement); // Required for FireFox
   ephemeralElement.click();
@@ -35,7 +40,6 @@ export const Options = () => {
       <button onClick={() => clearUsedWords()}>Clear Used Word List</button>
       <br />
 
-      <p> TODO: Clean this up!!!! </p>
       <div className="button">
         <label htmlFor="upload-input">
           <button
