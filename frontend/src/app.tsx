@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import yaml from 'yaml';
 import './app.css';
 import { Options, USED_WORDS } from './options';
+import { Button, Text, View } from 'react-native';
 
 const DIFFICULTY_MAP = new Map<number, string>([
   [1, 'easy'],
@@ -58,18 +59,18 @@ const Game = () => {
   const Home = () => {
     if (difficulty) {
       // Displays word of the previously selected difficulty
+      const nextTitle = `Next ${DIFFICULTY_MAP.get(difficulty)} Word`;
       return (
         <>
-          <div>
+          <View>
             The {DIFFICULTY_MAP.get(difficulty)} word is:
-            <div className="word-to-guess">{currentWord}</div>
-            <div>{localStorage.getItem(USED_WORDS)}</div>
-          </div>
-          <button onClick={() => setNewWord(difficulty)} style={{ textTransform: 'capitalize' }}>
-            Next {DIFFICULTY_MAP.get(difficulty)} Word
-          </button>
+            <Text style={{ fontSize: 40, textTransform: 'capitalize' }}>{currentWord}</Text>
+            <Text>{localStorage.getItem(USED_WORDS)}</Text>
+          </View>
+          <Button title={nextTitle} onPress={() => setNewWord(difficulty)} />
+
           <br />
-          <button onClick={() => setDifficulty(null)}>Home</button>
+          <Button title="Home" onPress={() => setDifficulty(null)} />
           <br />
         </>
       );
@@ -81,22 +82,21 @@ const Game = () => {
 
       // Array.from(...) due to: https://github.com/microsoft/TypeScript/issues/11209#issuecomment-303152976
       for (let diffInteger of Array.from(DIFFICULTY_MAP.keys())) {
+        const buttonTitle = `${DIFFICULTY_MAP.get(diffInteger)} Word`;
         buttons.push(
           <>
-            <button onClick={() => setNewWord(diffInteger)} style={{ textTransform: 'capitalize' }}>
-              {DIFFICULTY_MAP.get(diffInteger)} Word
-            </button>
+            <Button title={buttonTitle} onPress={() => setNewWord(diffInteger)} />
             <br />
           </>,
         );
       }
       return (
         <>
-          <div>Home Menu</div>
-          <div>
-            <div>Select Difficulty</div>
+          <Text>Home Menu</Text>
+          <View>
+            <Text>Select Difficulty</Text>
             {buttons}
-          </div>
+          </View>
           <Link to="/options">
             <button type="button">Options</button>
           </Link>

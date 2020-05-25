@@ -1,6 +1,7 @@
 import cogoToast from 'cogo-toast';
 import { Link } from 'react-router-dom';
 import React from 'react';
+import { Button, Text, View } from 'react-native';
 export const USED_WORDS = 'usedWords';
 
 const clearUsedWords = (): void => {
@@ -35,35 +36,22 @@ const exportUsedWords = (): void => {
 
 export const Options = () => {
   return (
-    <div>
-      <div>Game Options</div>
-      <button onClick={() => clearUsedWords()}>Clear Used Word List</button>
+    <View>
+      <Text>Game Options</Text>
+      <Button title="Clear Used Word List" onPress={() => clearUsedWords()} />
       <br />
 
       <div className="button">
         <label htmlFor="upload-input">
-          <button
-            onClick={() => {
-              document.getElementById('upload-input')?.click();
-            }}
-          >
-            Import Used Word List
-          </button>
+          <Button title="Import Used Word List" onPress={() => importUsedWords} />
         </label>
-        <input
-          type="file"
-          onChange={importUsedWords}
-          id="upload-input"
-          style={{
-            display: 'none',
-          }}
-        />
       </div>
-      <button onClick={() => exportUsedWords()}>Export Used Word List</button>
+      <br />
+      <Button title="Export Used Word List" onPress={() => exportUsedWords()} />
       <br />
       <Link to="/">
         <button type="button">Home</button>
       </Link>
-    </div>
+    </View>
   );
 };
