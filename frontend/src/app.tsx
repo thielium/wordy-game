@@ -41,7 +41,8 @@ const Game = () => {
       newWord = possibleWords[chosenWordIndex];
 
       if (chosenWordIndex === originalIndex) {
-        throw new Error('All words used. You must REALLY like this game!');
+        console.log('Aborting as all possible words were used');
+        return;
       }
     }
     setCurrentWord(newWord);
@@ -56,6 +57,14 @@ const Game = () => {
       const usedWords = JSON.parse(localStorage.getItem(localStorageName(difficulty)) || '[]');
       if (possibleWords.length === usedWords.length) {
         // TODO - all words used!
+        return (
+          <>
+            <Text style={{ fontSize: 40, textTransform: 'capitalize' }}>
+              All words used. You must REALLY like this game!
+            </Text>
+            <Button title="Home" onPress={() => setDifficulty(null)} />
+          </>
+        );
       }
 
       // Displays word of the previously selected difficulty
@@ -63,7 +72,7 @@ const Game = () => {
       return (
         <>
           <View>
-            The {DIFFICULTY_MAP[difficulty]} word is:
+            <Text>The {DIFFICULTY_MAP[difficulty]} word is:</Text>
             <Text style={{ fontSize: 40, textTransform: 'capitalize' }}>{currentWord}</Text>
             <Text>{localStorage.getItem(localStorageName(difficulty))}</Text>
           </View>
@@ -82,10 +91,10 @@ const Game = () => {
       for (const diffIndex in DIFFICULTY_MAP) {
         const buttonTitle = `${DIFFICULTY_MAP[diffIndex]} Word`;
         buttons.push(
-          <>
+          <React.Fragment key={diffIndex}>
             <Button title={buttonTitle} onPress={() => setNewWord(parseInt(diffIndex))} />
             <br />
-          </>,
+          </React.Fragment>,
         );
       }
       return (

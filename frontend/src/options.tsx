@@ -17,7 +17,6 @@ const importUsedWords = (event: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
     reader.onload = () => {
       if (typeof reader.result === 'string') {
-        console.log(reader.result);
         const allUsedWords = JSON.parse(reader.result);
         allLocalStorageNames().forEach((lsKey) => {
           localStorage.setItem(lsKey, allUsedWords[lsKey] || []);
@@ -40,7 +39,6 @@ const exportUsedWords = (): void => {
     cogoToast.error('Word list is empty');
     return;
   }
-  console.log(JSON.stringify(allUsedWords));
   const ephemeralElement = document.createElement('a');
   ephemeralElement.href = URL.createObjectURL(new Blob([JSON.stringify(allUsedWords)], { type: 'application/json' }));
   ephemeralElement.download = 'usedWords.json';
