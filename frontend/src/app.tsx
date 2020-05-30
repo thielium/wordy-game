@@ -5,14 +5,9 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import yaml from 'yaml';
 import './app.css';
-import { Options, USED_WORDS } from './options';
+import { Options } from './options';
+import { DIFFICULTY_MAP, localStorageName } from './utils';
 import { Button, Text, View } from 'react-native';
-
-const DIFFICULTY_MAP = new Map<number, string>([
-  [1, 'easy'],
-  [2, 'medium'],
-  [3, 'hard'],
-]);
 
 const Game = () => {
   const [currentWord, setCurrentWord] = useState<string | null>(null);
@@ -32,7 +27,7 @@ const Game = () => {
     setDifficulty(difficulty);
     var possibleWords = wordList[difficulty];
     let chosenWordIndex = Math.floor(possibleWords.length * Math.random());
-    const usedWords = JSON.parse(localStorage.getItem(USED_WORDS) || '[]');
+    const usedWords = JSON.parse(localStorage.getItem(localStorageName(difficulty)) || '[]');
 
     // There's a better way to do this, but the probability of encountering a used word
     // is so low, that the inefficiencies here are negligible
@@ -41,31 +36,36 @@ const Game = () => {
     const originalIndex = chosenWordIndex;
     while (usedWords.includes(newWord)) {
       // TODO - debug with chrome debugger in VSCode
-      console.log(chosenWordIndex);
-      console.log(newWord);
-
       chosenWordIndex++;
+      if (chosenWordIndex >= possibleWords.length) chosenWordIndex = 0;
+      newWord = possibleWords[chosenWordIndex];
+
       if (chosenWordIndex === originalIndex) {
         throw new Error('All words used. You must REALLY like this game!');
       }
-      if (chosenWordIndex >= possibleWords.length) chosenWordIndex = 0;
-      newWord = possibleWords[chosenWordIndex];
     }
     setCurrentWord(newWord);
     usedWords.push(newWord);
-    localStorage.setItem(USED_WORDS, JSON.stringify(usedWords));
+    localStorage.setItem(localStorageName(difficulty), JSON.stringify(usedWords));
   };
 
   const Home = () => {
     if (difficulty) {
+      // Check if all words have been used
+      const possibleWords = wordList[difficulty];
+      const usedWords = JSON.parse(localStorage.getItem(localStorageName(difficulty)) || '[]');
+      if (possibleWords.length === usedWords.length) {
+        // TODO - all words used!
+      }
+
       // Displays word of the previously selected difficulty
-      const nextTitle = `Next ${DIFFICULTY_MAP.get(difficulty)} Word`;
+      const nextTitle = `Next ${DIFFICULTY_MAP[difficulty]} Word`;
       return (
         <>
           <View>
-            The {DIFFICULTY_MAP.get(difficulty)} word is:
+            The {DIFFICULTY_MAP[difficulty]} word is:
             <Text style={{ fontSize: 40, textTransform: 'capitalize' }}>{currentWord}</Text>
-            <Text>{localStorage.getItem(USED_WORDS)}</Text>
+            <Text>{localStorage.getItem(localStorageName(difficulty))}</Text>
           </View>
           <Button title={nextTitle} onPress={() => setNewWord(difficulty)} />
 
@@ -79,13 +79,11 @@ const Game = () => {
       const buttons: React.ReactFragment[] = [];
 
       // TODO: CHANGE <br /> to Vertical Stacking
-
-      // Array.from(...) due to: https://github.com/microsoft/TypeScript/issues/11209#issuecomment-303152976
-      for (let diffInteger of Array.from(DIFFICULTY_MAP.keys())) {
-        const buttonTitle = `${DIFFICULTY_MAP.get(diffInteger)} Word`;
+      for (const diffIndex in DIFFICULTY_MAP) {
+        const buttonTitle = `${DIFFICULTY_MAP[diffIndex]} Word`;
         buttons.push(
           <>
-            <Button title={buttonTitle} onPress={() => setNewWord(diffInteger)} />
+            <Button title={buttonTitle} onPress={() => setNewWord(parseInt(diffIndex))} />
             <br />
           </>,
         );
