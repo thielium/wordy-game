@@ -1,6 +1,3 @@
-// TODOs:
-// * Add template page?
-
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import yaml from 'yaml';
@@ -35,7 +32,6 @@ const Game = () => {
 
     const originalIndex = chosenWordIndex;
     while (usedWords.includes(newWord)) {
-      // TODO - debug with chrome debugger in VSCode
       chosenWordIndex++;
       if (chosenWordIndex >= possibleWords.length) chosenWordIndex = 0;
       newWord = possibleWords[chosenWordIndex];

@@ -3,7 +3,7 @@ export const DIFFICULTY_MAP: { [key: string]: string } = {
   2: 'medium',
   3: 'hard',
 };
-export const USED_WORDS = 'usedWords';
+const USED_WORDS = 'usedWords';
 
 export const localStorageName = (difficulty: number): string => {
   return `${USED_WORDS}|${DIFFICULTY_MAP[difficulty]}`;
