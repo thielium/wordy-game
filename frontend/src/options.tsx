@@ -56,10 +56,15 @@ export const Options = () => {
       <br />
 
       <div className="button">
-        <label htmlFor="upload-input">
-          <button onClick={importUsedWords}>Activate Lasers</button>
-          <Button title="Import Used Word List" onPress={() => importUsedWords} />
-        </label>
+        <Button title="Import Used Word List" onPress={() => document.getElementById('upload-input')?.click()} />
+        <input
+          type="file"
+          onChange={importUsedWords}
+          id="upload-input"
+          style={{
+            display: 'none',
+          }}
+        />
       </div>
       <br />
       <Button title="Export Used Word List" onPress={() => exportUsedWords()} />
