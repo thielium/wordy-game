@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import yaml from 'yaml';
-import './app.css';
 import { Options } from './options';
 import { DIFFICULTY_MAP, localStorageName } from './utils';
 import { Button, Text, View } from 'react-native';
