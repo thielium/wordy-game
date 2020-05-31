@@ -1,13 +1,18 @@
 import express from 'express';
+import fs from 'fs';
 import createError, { HttpError } from 'http-errors';
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var cors = require("cors");
-
-var wordsRouter = require('./routes/words');
+var cors = require('cors');
+var router = express.Router();
 
 var app = express();
+
+router.get('/', (__: express.Request, res: express.Response) => {
+  const data = fs.readFileSync(__dirname + '/../../aux/word_list.yaml', 'utf8');
+  res.send(data);
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -20,14 +25,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', wordsRouter);
+app.use('/', router);
 
 // catch 404 and forward to error handler
-app.use(function(__, ___, next) {
+app.use(function (__, ___, next) {
   next(createError(404));
 });
 
-app.use(function(err: HttpError, req: express.Request, res: express.Response) {
+app.use(function (err: HttpError, req: express.Request, res: express.Response) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
