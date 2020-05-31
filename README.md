@@ -1,10 +1,19 @@
 # Wordy Game
 
-TODO: Come up with a better name
-TODO: Work on aesthetics
-TODO: Improve README
-TODO: Finish gen_json_dictionary.py
+A simple web-app game.
 
-## To Run
+## TODO List
+
+- Improve README
+- Find a simpler way "to install locally"
+- Finish gen_json_dictionary.py
+- Come up with a better name
+- Work on aesthetics
+
+## To install locally
+
+`$ npm i && cd backend && npm i && cd ../frontend && npm i && cd ..`
+
+## To Run locally
 
 `$ npm run dev`

@@ -1,7 +1,6 @@
 {
-  "name": "service",
-  "version": "0.0.0",
-  "private": true,
+  "name": "wordy-game-backend",
+  "version": "0.0.1",
   "scripts": {
     "start": "nodemon --config nodemon.json"
   },
