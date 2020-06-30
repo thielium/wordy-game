@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import yaml from 'yaml';
 import { Options } from './options';
 import { DIFFICULTY_MAP, localStorageName } from './utils';
-import { Button, Text, View } from 'react-native';
 
 const Game = () => {
   const [currentWord, setCurrentWord] = useState<string | null>(null);
@@ -54,10 +53,10 @@ const Game = () => {
         // TODO - all words used!
         return (
           <>
-            <Text style={{ fontSize: 40, textTransform: 'capitalize' }}>
+            <h1 style={{ fontSize: 40, textTransform: 'capitalize' }}>
               All words used. You must REALLY like this game!
-            </Text>
-            <Button title="Home" onPress={() => setDifficulty(null)} />
+            </h1>
+            <button onClick={() => setDifficulty(null)}>Home</button>
           </>
         );
       }
@@ -66,15 +65,15 @@ const Game = () => {
       const nextTitle = `Next ${DIFFICULTY_MAP[difficulty]} Word`;
       return (
         <>
-          <View>
-            <Text>The {DIFFICULTY_MAP[difficulty]} word is:</Text>
-            <Text style={{ fontSize: 40, textTransform: 'capitalize' }}>{currentWord}</Text>
-            <Text>{localStorage.getItem(localStorageName(difficulty))}</Text>
-          </View>
-          <Button title={nextTitle} onPress={() => setNewWord(difficulty)} />
+          <div>
+            <h2>The {DIFFICULTY_MAP[difficulty]} word is:</h2>
+            <h1 style={{ fontSize: 40, textTransform: 'capitalize' }}>{currentWord}</h1>
+            <h2>{localStorage.getItem(localStorageName(difficulty))}</h2> {/* TOOD: Delete this line */}
+          </div>
+          <button onClick={() => setNewWord(difficulty)}>{nextTitle}</button>
 
           <br />
-          <Button title="Home" onPress={() => setDifficulty(null)} />
+          <button onClick={() => setDifficulty(null)}>Home</button>
           <br />
         </>
       );
@@ -87,18 +86,18 @@ const Game = () => {
         const buttonTitle = `${DIFFICULTY_MAP[diffIndex]} Word`;
         buttons.push(
           <React.Fragment key={diffIndex}>
-            <Button title={buttonTitle} onPress={() => setNewWord(parseInt(diffIndex))} />
+            <button onClick={() => setNewWord(parseInt(diffIndex))}>{buttonTitle}</button>
             <br />
           </React.Fragment>,
         );
       }
       return (
         <>
-          <Text>Home Menu</Text>
-          <View>
-            <Text>Select Difficulty</Text>
+          <h1>Home Menu</h1>
+          <div>
+            <h2>Select Difficulty</h2>
             {buttons}
-          </View>
+          </div>
           <Link to="/options">
             <button type="button">Options</button>
           </Link>

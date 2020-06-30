@@ -1,7 +1,7 @@
 export const DIFFICULTY_MAP: { [key: string]: string } = {
-  1: 'easy',
-  2: 'medium',
-  3: 'hard',
+  1: 'Easy',
+  2: 'Medium',
+  3: 'Hard',
 };
 const USED_WORDS = 'usedWords';
 
