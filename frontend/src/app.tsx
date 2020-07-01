@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import yaml from 'yaml';
 import { Options } from './options';
 import { DIFFICULTY_MAP, localStorageName } from './utils';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 
 const Game = () => {
   const [currentWord, setCurrentWord] = useState<string | null>(null);
@@ -56,7 +58,9 @@ const Game = () => {
             <h1 style={{ fontSize: 40, textTransform: 'capitalize' }}>
               All words used. You must REALLY like this game!
             </h1>
-            <button onClick={() => setDifficulty(null)}>Home</button>
+            <Button variant="contained" onClick={() => setDifficulty(null)}>
+              Home
+            </Button>
           </>
         );
       }
@@ -70,10 +74,14 @@ const Game = () => {
             <h1 style={{ fontSize: 40, textTransform: 'capitalize' }}>{currentWord}</h1>
             <h2>{localStorage.getItem(localStorageName(difficulty))}</h2> {/* TOOD: Delete this line */}
           </div>
-          <button onClick={() => setNewWord(difficulty)}>{nextTitle}</button>
+          <Button variant="contained" color="primary" onClick={() => setNewWord(difficulty)}>
+            {nextTitle}
+          </Button>
 
           <br />
-          <button onClick={() => setDifficulty(null)}>Home</button>
+          <Button variant="contained" onClick={() => setDifficulty(null)}>
+            Home
+          </Button>
           <br />
         </>
       );
@@ -86,8 +94,9 @@ const Game = () => {
         const buttonTitle = `${DIFFICULTY_MAP[diffIndex]} Word`;
         buttons.push(
           <React.Fragment key={diffIndex}>
-            <button onClick={() => setNewWord(parseInt(diffIndex))}>{buttonTitle}</button>
-            <br />
+            <Button variant="contained" color="primary" onClick={() => setNewWord(parseInt(diffIndex))}>
+              {buttonTitle}
+            </Button>
           </React.Fragment>,
         );
       }
@@ -96,11 +105,18 @@ const Game = () => {
           <h1>Home Menu</h1>
           <div>
             <h2>Select Difficulty</h2>
-            {buttons}
+            <ButtonGroup
+              orientation="vertical"
+              color="primary"
+              aria-label="vertical contained primary button group"
+              variant="contained"
+            >
+              {buttons}
+            </ButtonGroup>
           </div>
-          <Link to="/options">
-            <button type="button">Options</button>
-          </Link>
+          <Button variant="contained" href="/options">
+            Options
+          </Button>
         </>
       );
     }

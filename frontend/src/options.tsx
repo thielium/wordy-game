@@ -1,8 +1,8 @@
 import cogoToast from 'cogo-toast';
 import _ from 'lodash';
-import { Link } from 'react-router-dom';
 import React from 'react';
 import { allLocalStorageNames } from './utils';
+import Button from '@material-ui/core/Button';
 
 const clearUsedWords = (): void => {
   allLocalStorageNames().forEach((lsKey) => {
@@ -49,10 +49,14 @@ export const Options = () => {
   return (
     <div>
       <h1>Game Options</h1>
-      <button onClick={() => clearUsedWords()}>Clear Used Word List</button>
+      <Button variant="contained" color="primary" onClick={() => clearUsedWords()}>
+        Clear Used Word List
+      </Button>
 
       <div className="button">
-        <button onClick={() => document.getElementById('upload-input')?.click()}>Import Used Word List</button>
+        <Button variant="contained" color="primary" onClick={() => document.getElementById('upload-input')?.click()}>
+          Import Used Word List
+        </Button>
         <input
           type="file"
           onChange={importUsedWords}
@@ -62,11 +66,13 @@ export const Options = () => {
           }}
         />
       </div>
-      <button onClick={() => exportUsedWords()}>Export Used Word List</button>
+      <Button variant="contained" color="primary" onClick={() => exportUsedWords()}>
+        Export Used Word List
+      </Button>
       <br />
-      <Link to="/">
-        <button type="button">Home</button>
-      </Link>
+      <Button variant="contained" type="button" href="/">
+        Home
+      </Button>
     </div>
   );
 };
