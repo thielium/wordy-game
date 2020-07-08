@@ -5,8 +5,16 @@ import { Options } from './options';
 import { DIFFICULTY_MAP, localStorageName } from './utils';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  button: {
+    margin: '10px 0px',
+  },
+});
 
 const Game = () => {
+  const classes = useStyles();
   const [currentWord, setCurrentWord] = useState<string | null>(null);
   const [difficulty, setDifficulty] = useState<number | null>(null); // Actually an integer: 1, 2, or 3
   const [wordList, setWordList] = useState<string[]>([]);
@@ -22,6 +30,7 @@ const Game = () => {
   const setNewWord = (difficulty: number | null): void => {
     if (difficulty === null) throw new Error('difficulty level is "null" in "setNewWord"');
     setDifficulty(difficulty);
+    console.log(wordList);
     var possibleWords = wordList[difficulty];
     let chosenWordIndex = Math.floor(possibleWords.length * Math.random());
     const usedWords = JSON.parse(localStorage.getItem(localStorageName(difficulty)) || '[]');
@@ -77,43 +86,38 @@ const Game = () => {
           <Button variant="contained" color="primary" onClick={() => setNewWord(difficulty)}>
             {nextTitle}
           </Button>
-
-          <br />
+          <br /> {/* TODO - br not working */}
           <Button variant="contained" onClick={() => setDifficulty(null)}>
             Home
           </Button>
-          <br />
         </>
       );
     } else {
       // Allows user to select word difficulty
       const buttons: React.ReactFragment[] = [];
 
-      // TODO: CHANGE <br /> to Vertical Stacking
       for (const diffIndex in DIFFICULTY_MAP) {
         const buttonTitle = `${DIFFICULTY_MAP[diffIndex]} Word`;
         buttons.push(
-          <React.Fragment key={diffIndex}>
-            <Button variant="contained" color="primary" onClick={() => setNewWord(parseInt(diffIndex))}>
-              {buttonTitle}
-            </Button>
-          </React.Fragment>,
+          <Button variant="contained" color="primary" onClick={() => setNewWord(parseInt(diffIndex))}>
+            {buttonTitle}
+          </Button>,
         );
       }
       return (
         <>
           <h1>Home Menu</h1>
-          <div>
-            <h2>Select Difficulty</h2>
-            <ButtonGroup
-              orientation="vertical"
-              color="primary"
-              aria-label="vertical contained primary button group"
-              variant="contained"
-            >
-              {buttons}
-            </ButtonGroup>
-          </div>
+          <h2>Select Difficulty</h2>
+          <ButtonGroup
+            className={classes.button}
+            orientation="vertical"
+            color="primary"
+            aria-label="vertical contained primary button group"
+            variant="contained"
+          >
+            {buttons}
+          </ButtonGroup>
+          <br />
           <Button variant="contained" href="/options">
             Options
           </Button>

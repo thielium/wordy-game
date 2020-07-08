@@ -3,6 +3,14 @@ import _ from 'lodash';
 import React from 'react';
 import { allLocalStorageNames } from './utils';
 import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  button: {
+    margin: '10px 0px',
+  },
+});
 
 const clearUsedWords = (): void => {
   allLocalStorageNames().forEach((lsKey) => {
@@ -46,33 +54,43 @@ const exportUsedWords = (): void => {
 };
 
 export const Options = () => {
+  const classes = useStyles();
   return (
-    <div>
+    <>
       <h1>Game Options</h1>
-      <Button variant="contained" color="primary" onClick={() => clearUsedWords()}>
-        Clear Used Word List
-      </Button>
-
-      <div className="button">
-        <Button variant="contained" color="primary" onClick={() => document.getElementById('upload-input')?.click()}>
-          Import Used Word List
-        </Button>
-        <input
-          type="file"
-          onChange={importUsedWords}
-          id="upload-input"
-          style={{
-            display: 'none',
-          }}
-        />
-      </div>
-      <Button variant="contained" color="primary" onClick={() => exportUsedWords()}>
-        Export Used Word List
-      </Button>
+      <>
+        <ButtonGroup
+          className={classes.button}
+          orientation="vertical"
+          color="primary"
+          aria-label="vertical contained primary button group"
+          variant="contained"
+        >
+          <Button variant="contained" color="primary" onClick={() => clearUsedWords()}>
+            Clear Used Word List
+          </Button>
+          <Button variant="contained" color="primary" onClick={() => document.getElementById('upload-input')?.click()}>
+            Import Used Word List
+          </Button>
+          <Button variant="contained" color="primary" onClick={() => exportUsedWords()}>
+            Export Used Word List
+          </Button>
+        </ButtonGroup>
+      </>
       <br />
       <Button variant="contained" type="button" href="/">
         Home
       </Button>
-    </div>
+
+      {/*Invisible file input button*/}
+      <input
+        type="file"
+        onChange={importUsedWords}
+        id="upload-input"
+        style={{
+          display: 'none',
+        }}
+      />
+    </>
   );
 };
