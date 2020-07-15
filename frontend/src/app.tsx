@@ -2,10 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import yaml from 'yaml';
 import { Options } from './options';
+import { UsedWords } from './used-words';
 import { DIFFICULTY_MAP, localStorageName } from './utils';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { makeStyles } from '@material-ui/core/styles';
+
+// TODO COUNTDOWN (3 seconds)
+//      TODO option to SET amount of time for countdown timer
+// TODO Separate page for page words
 
 const useStyles = makeStyles({
   button: {
@@ -59,9 +64,8 @@ const Game = () => {
     if (difficulty) {
       // Check if all words have been used
       const possibleWords = wordList[difficulty];
-      const usedWords = JSON.parse(localStorage.getItem(localStorageName(difficulty)) || '[]');
-      if (possibleWords.length === usedWords.length) {
-        // TODO - all words used!
+      const alreadyUsedWords = JSON.parse(localStorage.getItem(localStorageName(difficulty)) || '[]');
+      if (possibleWords.length === alreadyUsedWords.length) {
         return (
           <>
             <h1 style={{ fontSize: 40, textTransform: 'capitalize' }}>
@@ -81,12 +85,11 @@ const Game = () => {
           <div>
             <h2>The {DIFFICULTY_MAP[difficulty]} word is:</h2>
             <h1 style={{ fontSize: 40, textTransform: 'capitalize' }}>{currentWord}</h1>
-            <h2>{localStorage.getItem(localStorageName(difficulty))}</h2> {/* TOOD: Delete this line */}
           </div>
           <Button variant="contained" color="primary" onClick={() => setNewWord(difficulty)}>
             {nextTitle}
           </Button>
-          <br /> {/* TODO - br not working */}
+          <br /> {/* TODO - Replace */}
           <Button variant="contained" onClick={() => setDifficulty(null)}>
             Home
           </Button>
@@ -117,7 +120,11 @@ const Game = () => {
           >
             {buttons}
           </ButtonGroup>
-          <br />
+          <br /> {/* TODO - Replace */}
+          <Button variant="contained" href="/used_words">
+            Used Words
+          </Button>
+          <br /> {/* TODO - Replace */}
           <Button variant="contained" href="/options">
             Options
           </Button>
@@ -131,6 +138,9 @@ const Game = () => {
       <Switch>
         <Route exact path="/">
           <Home />
+        </Route>
+        <Route path="/used_words">
+          <UsedWords />
         </Route>
         <Route path="/options">
           <Options />
