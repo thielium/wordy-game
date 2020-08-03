@@ -18,21 +18,23 @@ const useStyles = makeStyles({
   },
 });
 
-const Countdown = () => {
-  const [secondsLeft, setSecondsLeft] = React.useState(3); // https://dev.to/zhiyueyi/how-to-create-a-simple-react-countdown-timer-4mc3
+type CountdownProps = {
+  numSeconds: number;
+  currentWord: string | null;
+};
+
+const Countdown = (props: CountdownProps) => {
+  const [secondsLeft, setSecondsLeft] = React.useState(props.numSeconds); // https://dev.to/zhiyueyi/how-to-create-a-simple-react-countdown-timer-4mc3
 
   useEffect(() => {
     secondsLeft > 0 && setTimeout(() => setSecondsLeft(secondsLeft - 1), 1000);
   }, [secondsLeft]);
 
-  return <div>Countdown: {secondsLeft}</div>;
+  if (secondsLeft === 0) return <h1 style={{ fontSize: 40, textTransform: 'capitalize' }}>{props.currentWord}</h1>;
+  else return <h1>Word displayed in: {secondsLeft} seconds</h1>;
 };
 
 const Game = () => {
-  const currentTimePlusThreeSeconds = () => {
-    const d = new Date();
-    return d.setSeconds(d.getSeconds() + 3);
-  };
   const classes = useStyles();
   const [currentWord, setCurrentWord] = useState<string | null>(null);
   const [difficulty, setDifficulty] = useState<number | null>(null); // Actually an integer: 1, 2, or 3
@@ -98,8 +100,7 @@ const Game = () => {
         <>
           <div>
             <h2>The {DIFFICULTY_MAP[difficulty]} word is:</h2>
-            <Countdown />
-            <h1 style={{ fontSize: 40, textTransform: 'capitalize' }}>{currentWord}</h1>
+            <Countdown numSeconds={3} currentWord={currentWord} />
           </div>
           <Button variant="contained" color="primary" onClick={() => setNewWord(difficulty)}>
             {nextTitle}
