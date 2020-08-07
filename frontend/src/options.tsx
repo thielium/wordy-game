@@ -5,6 +5,9 @@ import { allLocalStorageNames } from './utils';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { makeStyles } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles({
   button: {
@@ -55,10 +58,30 @@ const exportUsedWords = (): void => {
 
 export const Options = () => {
   const classes = useStyles();
+  const [secondsToWait, setSecondsToWait] = React.useState(3);
+  //const handleDropDownChange = (event: any) => {
+  //  setSecondsToWait(event);
+  //};
   return (
     <>
       <h1>Game Options</h1>
       <>
+        Wait&nbsp;
+        <select
+          value={secondsToWait}
+          onChange={(event: React.ChangeEvent<{ value: unknown }>) =>
+            setSecondsToWait(parseInt(event.target.value as string))
+          }
+        >
+          <option>0</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>5</option>
+          <option>9</option>
+        </select>
+        &nbsp;Seconds before revealing word
+        <br />
         <ButtonGroup
           className={classes.button}
           orientation="vertical"
