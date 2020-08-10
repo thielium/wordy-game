@@ -1,13 +1,10 @@
 import cogoToast from 'cogo-toast';
 import _ from 'lodash';
 import React from 'react';
-import { allLocalStorageNames } from './utils';
+import { SECONDS_TO_WAIT, allLocalStorageNames } from './utils';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { makeStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles({
   button: {
@@ -22,6 +19,10 @@ const clearUsedWords = (): void => {
   cogoToast.success('Used word list cleared');
 };
 
+// TODO importUsedWords
+// TODO importUsedWords
+// TODO importUsedWords
+// TODO importUsedWords
 const importUsedWords = (event: React.ChangeEvent<HTMLInputElement>) => {
   if (event.target.files && event.target.files[0]) {
     const reader = new FileReader();
@@ -58,10 +59,7 @@ const exportUsedWords = (): void => {
 
 export const Options = () => {
   const classes = useStyles();
-  const [secondsToWait, setSecondsToWait] = React.useState(3);
-  //const handleDropDownChange = (event: any) => {
-  //  setSecondsToWait(event);
-  //};
+  const [secondsToWait, setSecondsToWait] = React.useState(parseInt(localStorage.getItem(SECONDS_TO_WAIT) || '3'));
   return (
     <>
       <h1>Game Options</h1>
@@ -69,16 +67,15 @@ export const Options = () => {
         Wait&nbsp;
         <select
           value={secondsToWait}
-          onChange={(event: React.ChangeEvent<{ value: unknown }>) =>
-            setSecondsToWait(parseInt(event.target.value as string))
-          }
+          onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+            const newSecondsToWait = event.target.value as string;
+            setSecondsToWait(parseInt(newSecondsToWait));
+            localStorage.setItem(SECONDS_TO_WAIT, newSecondsToWait);
+          }}
         >
-          <option>0</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>5</option>
-          <option>9</option>
+          {[0, 1, 2, 3, 5, 9].map((value) => (
+            <option>{value}</option>
+          ))}
         </select>
         &nbsp;Seconds before revealing word
         <br />
@@ -106,14 +103,6 @@ export const Options = () => {
       </Button>
 
       {/*Invisible file input button*/}
-      <input
-        type="file"
-        onChange={importUsedWords}
-        id="upload-input"
-        style={{
-          display: 'none',
-        }}
-      />
     </>
   );
 };
