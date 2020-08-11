@@ -63,6 +63,14 @@ export const Options = () => {
   return (
     <>
       <h1>Game Options</h1>
+      <input
+        type="file"
+        onChange={importUsedWords}
+        id="upload-input"
+        style={{
+          display: 'none',
+        }}
+      />
       <>
         Wait&nbsp;
         <select

@@ -3,13 +3,11 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import yaml from 'yaml';
 import { Options } from './options';
 import { UsedWords } from './used-words';
-import { DIFFICULTY_MAP, localStorageName } from './utils';
+import { DIFFICULTY_MAP, SECONDS_TO_WAIT, localStorageName } from './utils';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { makeStyles } from '@material-ui/core/styles';
 
-// TODO COUNTDOWN (3 seconds)
-//      TODO option to SET amount of time for countdown timer
 // TODO Separate page for page words
 
 const useStyles = makeStyles({
@@ -100,7 +98,7 @@ const Game = () => {
         <>
           <div>
             <h2>The {DIFFICULTY_MAP[difficulty]} word is:</h2>
-            <Countdown numSeconds={3} currentWord={currentWord} />
+            <Countdown numSeconds={parseInt(localStorage.getItem(SECONDS_TO_WAIT) || '3')} currentWord={currentWord} />
           </div>
           <Button variant="contained" color="primary" onClick={() => setNewWord(difficulty)}>
             {nextTitle}
