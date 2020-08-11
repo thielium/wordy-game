@@ -135,13 +135,14 @@ const Game = () => {
             {buttons}
           </ButtonGroup>
           <br /> {/* TODO - Replace */}
-          <Button variant="contained" href="/used_words">
-            Used Words
-          </Button>
-          <br /> {/* TODO - Replace */}
-          <Button variant="contained" href="/options">
-            Options
-          </Button>
+          <ButtonGroup orientation="vertical" variant="contained">
+            <Button variant="contained" href="/used_words">
+              Used Words
+            </Button>
+            <Button variant="contained" href="/options">
+              Options
+            </Button>
+          </ButtonGroup>
         </>
       );
     }

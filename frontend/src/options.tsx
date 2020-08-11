@@ -19,10 +19,6 @@ const clearUsedWords = (): void => {
   cogoToast.success('Used word list cleared');
 };
 
-// TODO importUsedWords
-// TODO importUsedWords
-// TODO importUsedWords
-// TODO importUsedWords
 const importUsedWords = (event: React.ChangeEvent<HTMLInputElement>) => {
   if (event.target.files && event.target.files[0]) {
     const reader = new FileReader();
@@ -63,6 +59,8 @@ export const Options = () => {
   return (
     <>
       <h1>Game Options</h1>
+
+      {/*Invisible file input button*/}
       <input
         type="file"
         onChange={importUsedWords}
@@ -106,11 +104,15 @@ export const Options = () => {
         </ButtonGroup>
       </>
       <br />
-      <Button variant="contained" type="button" href="/">
-        Home
-      </Button>
 
-      {/*Invisible file input button*/}
+      <ButtonGroup orientation="vertical" variant="contained">
+        <Button variant="contained" href="/used_words">
+          Used Words
+        </Button>
+        <Button variant="contained" href="/">
+          Home
+        </Button>
+      </ButtonGroup>
     </>
   );
 };
