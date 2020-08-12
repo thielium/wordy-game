@@ -8,7 +8,8 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { makeStyles } from '@material-ui/core/styles';
 
-// TODO Separate page for page words
+// TODO: Options to select URL to use for word-list (thus custom word-lists)
+// TODO: const Home = () => { is GIANT! reduce its size
 
 const useStyles = makeStyles({
   button: {
@@ -94,19 +95,34 @@ const Game = () => {
 
       // Displays word of the previously selected difficulty
       const nextTitle = `Next ${DIFFICULTY_MAP[difficulty]} Word`;
+
+      const buttons: React.ReactFragment[] = [];
+      for (const diffIndex in DIFFICULTY_MAP) {
+        if (parseInt(diffIndex) == difficulty) continue;
+        const buttonTitle = `${DIFFICULTY_MAP[diffIndex]} Word`;
+        buttons.push(
+          <Button variant="contained" onClick={() => setNewWord(parseInt(diffIndex))}>
+            {buttonTitle}
+          </Button>,
+        );
+      }
       return (
         <>
           <div>
-            <h2>The {DIFFICULTY_MAP[difficulty]} word is:</h2>
+            <h2>The {DIFFICULTY_MAP[difficulty]} word is ...</h2>
             <Countdown numSeconds={parseInt(localStorage.getItem(SECONDS_TO_WAIT) || '3')} currentWord={currentWord} />
           </div>
           <Button variant="contained" color="primary" onClick={() => setNewWord(difficulty)}>
             {nextTitle}
           </Button>
           <br /> {/* TODO - Replace */}
-          <Button variant="contained" onClick={() => setDifficulty(null)}>
-            Home
-          </Button>
+          <br /> {/* TODO - Replace */}
+          <ButtonGroup orientation="vertical" variant="contained">
+            {buttons}
+            <Button variant="contained" onClick={() => setDifficulty(null)}>
+              Home
+            </Button>
+          </ButtonGroup>
         </>
       );
     } else {
