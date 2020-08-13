@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import yaml from 'yaml';
+// import yaml from 'yaml';
 import { Options } from './options';
 import { DIFFICULTY_MAP, localStorageName } from './utils';
 import { Button, Text, View } from 'react-native';
+import wordList from './word_list.yaml';
 
 const Game = () => {
   const [currentWord, setCurrentWord] = useState<string | null>(null);
   const [difficulty, setDifficulty] = useState<number | null>(null); // Actually an integer: 1, 2, or 3
-  const [wordList, setWordList] = useState<string[]>([]);
+  // const [wordList, setWordList] = useState<string[]>([]);
 
-  useEffect(() => {
-    const readWordList = async () => {
-      let resp = await fetch('http://localhost:9000/');
-      setWordList(yaml.parse(await resp.text()));
-    };
-    readWordList();
-  }, []);
+  // useEffect(() => {
+  //   const readWordList = async () => {
+  //     let resp = await fetch('http://localhost:9000/');
+  //     setWordList(yaml.parse(await resp.text()));
+  //   };
+  //   readWordList();
+  // }, []);
 
   const setNewWord = (difficulty: number | null): void => {
     if (difficulty === null) throw new Error('difficulty level is "null" in "setNewWord"');

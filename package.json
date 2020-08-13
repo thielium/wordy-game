@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "http://bfrizb.github.io/wordy-game",
   "scripts": {
-    "dev": "concurrently 'cd frontend; ./node_modules/react-scripts/bin/react-scripts.js start' 'cd backend; nodemon --config nodemon.json'"
+    "dev": "cd frontend; ./node_modules/react-scripts/bin/react-scripts.js start"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",

@@ -12,7 +12,7 @@ A simple web-app game.
 
 ## To install locally
 
-`$ npm i && cd backend && npm i && cd ../frontend && npm i && cd ..`
+`$ npm i && cd ../frontend && npm i && cd ..`
 
 ## To Run locally
 
